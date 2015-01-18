@@ -1,0 +1,21 @@
+# go-rados
+
+These are librados bindings for the Go programming language.
+The current implementation is limited in scope and is aimed at
+exposing the minimum functionality required for creating the
+resources required for librbd to consume librados services.
+
+For Go librbd bindings, please visit:
+	https://github.com/clbh/go-rbd
+
+To obtain the Ceph source from which librados can be built,
+please visit:
+	https://github.com/ceph/ceph
+
+
+Authors:
+	Benoit Page-Guitard (benoit@anchor.net.au)
+
+License:
+	GNU General Public License v3
+	http://www.gnu.org/licenses/gpl.html
