@@ -32,7 +32,7 @@ import (
 )
 
 // Our bindings version
-const VERSION string = "1.0.0"
+const VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH = 1, 0, 0
 
 // Exported types
 type Conn struct {
@@ -50,7 +50,7 @@ type Pool struct {
 //   Library version querying
 ////
 
-func Version() (major, minor, extra int) {
+func LibraryVersion() (major, minor, extra int) {
 	var c_major, c_minor, c_extra C.int
 
 	C.rados_version(&c_major, &c_minor, &c_extra)
