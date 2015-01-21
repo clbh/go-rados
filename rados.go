@@ -62,9 +62,10 @@ func LibraryVersion() (major, minor, extra int) {
 //   Connection creation/destruction functions
 ////
 
-func Create(clientname string) (*Conn, error) {
+func CreateConnection(clientname string) (*Conn, error) {
 	var handle C.rados_t
 
+	// TODO: Release unmanaged heap memory allocated by C.CString()
 	if result := C.rados_create2(&handle, C.CString("ceph"), C.CString(clientname), 0); result < 0 {
 		return nil, errors.New("Failed to create connection object")
 	}
@@ -94,6 +95,7 @@ func (conn *Conn) Close() {
 ////
 
 func (conn *Conn) ConfigSet(key string, value string) error {
+	// TODO: Release unmanaged heap memory allocated by C.CString()
 	if result := C.rados_conf_set(conn.handle, C.CString(key), C.CString(value)); result < 0 {
 		return errors.New("Failed to set configuration value")
 	}
@@ -104,6 +106,7 @@ func (conn *Conn) ConfigSet(key string, value string) error {
 func (conn *Conn) ConfigGet(key string) (value string, err error) {
 	var buf [1024]C.char
 
+	// TODO: Release unmanaged heap memory allocated by C.CString()
 	if result := C.rados_conf_get(conn.handle, C.CString(key), &buf[0], 1023); result < 0 {
 		return "", errors.New("Failed to fetch configuration value")
 	}
@@ -112,6 +115,7 @@ func (conn *Conn) ConfigGet(key string) (value string, err error) {
 }
 
 func (conn *Conn) ConfigReadFile(path string) error {
+	// TODO: Release unmanaged heap memory allocated by C.CString()
 	if result := C.rados_conf_read_file(conn.handle, C.CString(path)); result < 0 {
 		return errors.New("Failed to process external configuration file")
 	}
@@ -123,8 +127,10 @@ func (conn *Conn) ConfigReadFile(path string) error {
 //   Pool management functions
 ////
 
-func (conn *Conn) PoolOpen(name string) (*Pool, error) {
+func (conn *Conn) OpenPool(name string) (*Pool, error) {
 	var handle C.rados_ioctx_t
+
+	// TODO: Release unmanaged heap memory allocated by C.CString()
 	if result := C.rados_ioctx_create(conn.handle, C.CString(name), &handle); result < 0 {
 		return nil, errors.New("Failed to open pool")
 	}
